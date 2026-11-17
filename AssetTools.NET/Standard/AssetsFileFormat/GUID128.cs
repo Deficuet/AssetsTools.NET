@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace AssetsTools.NET
 {
     // todo: very similar to hash128?
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct GUID128
     {
         private const string HexToLiteral = "0123456789abcdef";

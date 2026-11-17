@@ -4,7 +4,26 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>9</LangVersion>
     <Nullable>Disable</Nullable>
+    <PackageId>Deficuet.$(AssemblyName)</PackageId>
+    <Title>AssetsTools.NET.Cpp2IL-1110</Title>
+    <Version>3.0.4-alpha.1</Version>
+    <Description>A snapshot of AssetsTools.NET built on 2026 Nov. 10</Description>
+    <PackageProjectUrl>https://github.com/nesrak1/AssetsTools.NET</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/nesrak1/AssetsTools.NET</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Samboy063.LibCpp2IL" Version="2022.1.0-pre-release.21" />
