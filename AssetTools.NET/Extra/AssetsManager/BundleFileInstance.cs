@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace AssetsTools.NET.Extra
@@ -45,6 +46,31 @@ namespace AssetsTools.NET.Extra
         public BundleFileInstance(FileStream stream, bool unpackIfPacked = true)
             : this(stream, stream.Name, unpackIfPacked)
         {
+        }
+
+        /// <summary>
+        /// Wraps an <see cref="AssetBundleFile"/> that was produced by an external
+        /// loader (for example a bundle decryption pipeline) so it can be used
+        /// exactly like a bundle read by <see cref="AssetBundleFile.Read"/>.
+        /// The instance takes ownership of the readers inside <paramref name="file"/>.
+        /// </summary>
+        /// <param name="file">The already loaded bundle.</param>
+        /// <param name="filePath">Path used for manager lookups. It does not need to exist on disk.</param>
+        /// <param name="originalCompression">
+        /// Compression type to restore when the bundle is packed again.
+        /// Use <see cref="AssetBundleFile.GetCompressionType"/> when in doubt.
+        /// </param>
+        public BundleFileInstance(AssetBundleFile file, string filePath, AssetBundleCompressionType originalCompression)
+        {
+            if (file == null)
+                throw new ArgumentNullException(nameof(file));
+
+            path = Path.GetFullPath(filePath);
+            name = Path.GetFileName(path);
+
+            this.file = file;
+            this.originalCompression = originalCompression;
+            loadedAssetsFiles = new List<AssetsFileInstance>();
         }
     }
 }

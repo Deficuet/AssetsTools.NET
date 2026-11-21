@@ -6,7 +6,7 @@
     <Platforms>AnyCPU</Platforms>
     <LangVersion>8</LangVersion>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <Nullable>Disable</Nullable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -37,7 +37,7 @@
     <NoWarn>1591;1572;1571;1573;1587;1570</NoWarn>
     <PackageId>Deficuet.$(AssemblyName)</PackageId>
     <Title>AssetsTools.NET-1110</Title>
-    <Version>3.0.5-alpha.2</Version>
+    <Version>3.0.5-alpha.3</Version>
     <Description>A snapshot of AssetsTools.NET built on 2026 Nov. 10</Description>
     <PackageProjectUrl>https://github.com/nesrak1/AssetsTools.NET</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>

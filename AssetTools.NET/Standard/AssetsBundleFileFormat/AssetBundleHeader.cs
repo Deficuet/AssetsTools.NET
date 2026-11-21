@@ -23,6 +23,13 @@ namespace AssetsTools.NET
         public string EngineVersion { get; set; }
 
         /// <summary>
+        /// Engine version exactly as it appeared in the file, when a loader had to
+        /// replace it (for example a stripped "0.0.0"). <see cref="EngineVersion"/>
+        /// then holds the effective value. Null when no replacement happened.
+        /// </summary>
+        public string RawEngineVersion { get; set; }
+
+        /// <summary>
         /// Header for bundles with a UnityFS Signature.
         /// </summary>
         public AssetBundleFSHeader FileStreamHeader { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace AssetsTools.NET.Extra
@@ -28,18 +29,7 @@ namespace AssetsTools.NET.Extra
                 return bunInst;
 
             bunInst = new BundleFileInstance(stream, path, unpackIfPacked);
-            lock (BundleLookup)
-            {
-                lock (Bundles)
-                {
-                    BundleLookup[lookupKey] = bunInst;
-                    Bundles.Add(bunInst);
-                }
-            }
-
-            LoadTypeTreeBlobsFromBundle(bunInst);
-
-            return bunInst;
+            return RegisterBundleFile(bunInst, path);
         }
 
         /// <summary>
@@ -67,6 +57,43 @@ namespace AssetsTools.NET.Extra
         public BundleFileInstance LoadBundleFile(string path, bool unpackIfPacked = true)
         {
             return LoadBundleFile(File.OpenRead(path), unpackIfPacked);
+        }
+
+        /// <summary>
+        /// Registers an already loaded <see cref="BundleFileInstance"/> with this manager.
+        /// The instance is added to <see cref="Bundles"/> and <see cref="BundleLookup"/> and
+        /// its type tree blobs are scanned, exactly like <see cref="LoadBundleFile(Stream, string, bool)"/>
+        /// does for a bundle it parsed itself. Use this for bundles produced by an
+        /// external loader so every downstream manager feature keeps working.
+        /// </summary>
+        /// <param name="bunInst">The instance to register.</param>
+        /// <param name="path">Path used for lookups. Should match <see cref="BundleFileInstance.path"/>.</param>
+        /// <returns>
+        /// <paramref name="bunInst"/> when it was registered, or the instance that was
+        /// already loaded for the same path. In the latter case the caller should close
+        /// the instance it passed in.
+        /// </returns>
+        public BundleFileInstance RegisterBundleFile(BundleFileInstance bunInst, string path)
+        {
+            if (bunInst == null)
+                throw new ArgumentNullException(nameof(bunInst));
+
+            string lookupKey = GetBundleLookupKey(path);
+            if (BundleLookup.TryGetValue(lookupKey, out BundleFileInstance existing))
+                return existing;
+
+            lock (BundleLookup)
+            {
+                lock (Bundles)
+                {
+                    BundleLookup[lookupKey] = bunInst;
+                    Bundles.Add(bunInst);
+                }
+            }
+
+            LoadTypeTreeBlobsFromBundle(bunInst);
+
+            return bunInst;
         }
 
         /// <summary>
